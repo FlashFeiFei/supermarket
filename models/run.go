@@ -18,7 +18,7 @@ import (
 	"strings"
 
 	"github.com/astaxie/beego"
-	"github.com/flashfeifei/supermarket/miner"
+	"github.com/hunterhug/marmot/miner"
 	"github.com/flashfeifei/supermarket/conf"
 	"github.com/flashfeifei/supermarket/models/util"
 )
