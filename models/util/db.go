@@ -19,9 +19,9 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/flashfeifei/supermarket/conf"
 	"github.com/flashfeifei/supermarket/models/admin"
+	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
 
@@ -38,9 +38,14 @@ func Createtb() {
 func Syncdb(force bool) {
 	beego.Trace("db, sync db start")
 
+	//通过golang语言对数据库抽象的接口，下载了mysql驱动的具体实现，去创建数据库
 	Createdb(force)
+	//beego的 orm初始化和框架自定义的模型注册
 	Connect()
+	//运行orm，即可生成表拉
 	CreateConfig()
+
+	//初始化框架后台的数据库数据
 	Createtb()
 
 	beego.Trace("sync db end, please reopen app again")
@@ -68,6 +73,7 @@ func Createdb(force bool) {
 	beego.Trace("create database start")
 	var dns, createdbsql, dropdbsql string
 
+	//具体驱动实现连接具体数据库
 	switch conf.DbType {
 	case "mysql":
 		dns = fmt.Sprintf("%s:%s@tcp(%s:%s)/?charset=utf8", conf.DbUser, conf.DbPass, conf.DbHost, conf.DbPort)
@@ -82,6 +88,7 @@ func Createdb(force bool) {
 		beego.Critical("db driver not support:", conf.DbType)
 		return
 	}
+	//连接数据库
 	db, err := sql.Open(conf.DbType, dns)
 	if err != nil {
 		panic(err.Error())
@@ -133,6 +140,7 @@ func Connect() {
 	var dns string
 	switch conf.DbType {
 	case "mysql":
+		//注册mysql驱动
 		orm.RegisterDriver("mysql", orm.DRMySQL)
 		dns = conf.MYSQLDNS
 		break
@@ -142,6 +150,7 @@ func Connect() {
 	}
 
 	beego.Trace("database start to connect", dns)
+	//通过驱动去连接数据库
 	err := orm.RegisterDataBase("default", conf.DbType, dns)
 	if err != nil {
 		beego.Error("register data:" + err.Error())
@@ -158,5 +167,6 @@ func Connect() {
 		orm.DebugLog = orm.NewLog(w)
 	}
 
+	//注册系统rbac的orm模型
 	RegisterDBModel() // must register
 }

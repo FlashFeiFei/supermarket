@@ -30,24 +30,29 @@ import (
 
 func init() {
 	// init flag
+	//通过命令行传入的参数来覆盖一些默认的参数，从而执行一些非默认的逻辑
 	flags := conf.FlagConfig{}
 
 	// user that hide
 	flags.User = flag.String("user", "", "user")
 
 	// db init or rebuild
-	flags.DbInit = flag.Bool("db", false, "init db")
-	flags.DbInitForce = flag.Bool("f", false, "force init db first drop db then rebuild it")
+	// 初始化数据库
+	flags.DbInit = flag.Bool("db", false, "初始化数据库")
+	flags.DbInitForce = flag.Bool("f", false, "强制init db先删除db，然后重新构建它")
 
 	// rbac config rebuild
-	flags.Rbac = flag.Bool("rbac", false, "rebuild rbac database tables")
+	// rbac配置重建
+	flags.Rbac = flag.Bool("rbac", false, "rbac配置重建")
 
 	// front-end  view
 	home := flag.String("home", "", "home template")
 
 	// config file position
-	config := flag.String("config", "", "config file position if empty use default")
+	//如果配置文件位置为空，则使用默认值
+	config := flag.String("config", "", "如果配置文件位置为空，则使用默认值")
 
+	// 获取命令传入的参数
 	flag.Parse()
 
 	// init config
@@ -70,6 +75,7 @@ func init() {
 
 	// init lang
 	// just add some ini in conf such locale_zh-CN.ini and edit app.conf
+	// beego自带的语言包
 	langTypes := strings.Split(beego.AppConfig.String("lang_types"), "|")
 
 	for _, lang := range langTypes {
@@ -81,6 +87,7 @@ func init() {
 	}
 
 	// add func map
+	// 注册模板可以调用的函数
 	beego.Trace("add i18n function map")
 	beego.AddFuncMap("i18n", i18n.Tr)
 
@@ -89,6 +96,7 @@ func init() {
 	mime.AddExtensionType(".css", "text/css") // some not important
 
 	// init model
+	//模型运行
 	beego.Trace("model run")
 	models.Run(flags)
 
