@@ -4,8 +4,8 @@ import (
 	"strconv"
 
 	"github.com/astaxie/beego/orm"
-	"github.com/hunterhug/rabbit/lib"
-	"github.com/hunterhug/rabbit/models/blog"
+	"github.com/flashfeifei/supermarket/lib"
+	"github.com/flashfeifei/supermarket/models/blog"
 )
 
 // not so good must rewrite!

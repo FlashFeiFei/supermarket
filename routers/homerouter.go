@@ -14,7 +14,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/hunterhug/rabbit/controllers/home"
+	"github.com/flashfeifei/supermarket/controllers/home"
 )
 
 func homerouter() {

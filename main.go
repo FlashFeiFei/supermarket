@@ -21,11 +21,11 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
-	"github.com/hunterhug/rabbit/conf"
-	"github.com/hunterhug/rabbit/controllers"
-	"github.com/hunterhug/rabbit/lib"
-	"github.com/hunterhug/rabbit/models"
-	"github.com/hunterhug/rabbit/routers"
+	"github.com/flashfeifei/supermarket/conf"
+	"github.com/flashfeifei/supermarket/controllers"
+	"github.com/flashfeifei/supermarket/lib"
+	"github.com/flashfeifei/supermarket/models"
+	"github.com/flashfeifei/supermarket/routers"
 )
 
 func init() {

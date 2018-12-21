@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/hunterhug/rabbit/conf"
-	"github.com/hunterhug/rabbit/models/util"
+	"github.com/flashfeifei/supermarket/conf"
+	"github.com/flashfeifei/supermarket/models/util"
 )
 
 func init() {

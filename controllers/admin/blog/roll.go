@@ -3,10 +3,10 @@ package blog
 import (
 	// "fmt"
 	//"github.com/astaxie/beego"
-	. "github.com/hunterhug/rabbit/lib"
+	. "github.com/flashfeifei/supermarket/lib"
 	//"github.com/hunterhug/rabbit/models/admin"
 	"github.com/astaxie/beego/orm"
-	"github.com/hunterhug/rabbit/models/blog"
+	"github.com/flashfeifei/supermarket/models/blog"
 )
 
 type RollController struct {

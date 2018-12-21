@@ -13,8 +13,8 @@
 package rbac
 
 import (
-	"github.com/hunterhug/rabbit/models/admin"
-	"github.com/hunterhug/rabbit/conf"
+	"github.com/flashfeifei/supermarket/models/admin"
+	"github.com/flashfeifei/supermarket/conf"
 )
 
 type CommonController struct {

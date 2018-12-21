@@ -14,7 +14,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/hunterhug/rabbit/controllers/admin/blog"
+	"github.com/flashfeifei/supermarket/controllers/admin/blog"
 )
 
 func blogrouter() {

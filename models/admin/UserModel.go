@@ -19,7 +19,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
-	. "github.com/hunterhug/rabbit/lib"
+	. "github.com/flashfeifei/supermarket/lib"
 )
 
 type User struct {

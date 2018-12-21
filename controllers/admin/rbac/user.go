@@ -14,7 +14,7 @@ package rbac
 
 import (
 	"fmt"
-	"github.com/hunterhug/rabbit/models/admin"
+	"github.com/flashfeifei/supermarket/models/admin"
 )
 
 type UserController struct {

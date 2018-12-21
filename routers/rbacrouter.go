@@ -14,7 +14,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/hunterhug/rabbit/controllers/admin/rbac"
+	"github.com/flashfeifei/supermarket/controllers/admin/rbac"
 )
 
 // 后台RBAC路由

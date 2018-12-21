@@ -18,9 +18,9 @@ import (
 	"strings"
 
 	"github.com/astaxie/beego"
-	"github.com/hunterhug/marmot/miner"
-	"github.com/hunterhug/rabbit/conf"
-	"github.com/hunterhug/rabbit/models/util"
+	"github.com/flashfeifei/supermarket/miner"
+	"github.com/flashfeifei/supermarket/conf"
+	"github.com/flashfeifei/supermarket/models/util"
 )
 
 func Run(config conf.FlagConfig) {

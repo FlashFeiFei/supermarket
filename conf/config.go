@@ -18,7 +18,7 @@ import (
 	"strconv"
 
 	"github.com/astaxie/beego"
-	"github.com/hunterhug/parrot/util"
+	"github.com/flashfeifei/supermarket/util"
 )
 
 type FlagConfig struct {

@@ -15,7 +15,7 @@ package rbac
 import (
 	"encoding/json"
 	"github.com/astaxie/beego/orm"
-	"github.com/hunterhug/rabbit/models/admin"
+	"github.com/flashfeifei/supermarket/models/admin"
 )
 
 type NodeController struct {

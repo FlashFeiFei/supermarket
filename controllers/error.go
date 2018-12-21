@@ -14,7 +14,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/hunterhug/rabbit/conf"
+	"github.com/flashfeifei/supermarket/conf"
 )
 
 type ErrorController struct {

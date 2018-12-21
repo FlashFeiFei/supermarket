@@ -13,7 +13,7 @@
 package rbac
 
 import (
-	"github.com/hunterhug/rabbit/models/admin"
+	"github.com/flashfeifei/supermarket/models/admin"
 )
 
 type GroupController struct {

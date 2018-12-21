@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
-	"github.com/hunterhug/rabbit/conf"
-	"github.com/hunterhug/rabbit/lib"
-	"github.com/hunterhug/rabbit/models/admin"
+	"github.com/flashfeifei/supermarket/conf"
+	"github.com/flashfeifei/supermarket/lib"
+	"github.com/flashfeifei/supermarket/models/admin"
 	"strconv"
 	"strings"
 )

@@ -2,8 +2,8 @@ package blog
 
 import (
 	"github.com/astaxie/beego/orm"
-	. "github.com/hunterhug/rabbit/lib"
-	"github.com/hunterhug/rabbit/models/blog"
+	. "github.com/flashfeifei/supermarket/lib"
+	"github.com/flashfeifei/supermarket/models/blog"
 )
 
 type AlbumController struct {

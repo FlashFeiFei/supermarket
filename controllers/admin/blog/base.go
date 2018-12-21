@@ -3,7 +3,7 @@ package blog
 import (
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
-	"github.com/hunterhug/rabbit/conf"
+	"github.com/flashfeifei/supermarket/conf"
 )
 
 type baseController struct {
