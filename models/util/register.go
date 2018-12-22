@@ -15,7 +15,6 @@ func RegisterDBAdminModel() {
 func RegisterDBSupermarket() {
 
 	orm.RegisterModel(new(user.User))
-	
 }
 
 func RegisterDBModel() {
