@@ -5,11 +5,11 @@ CREATE TABLE `supermarket_user` (
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '登录账号',
   `password` varchar(40) NOT NULL DEFAULT '' COMMENT '密码',
   `nickname` varchar(10) NOT NULL DEFAULT '' COMMENT '昵称',
-  `status` int(11) NOT NULL DEFAULT '0' COMMENT '1正常用户，0被封',
-  `email` varchar(32) NOT NULL DEFAULT 'null' COMMENT '邮箱',
-  `phone` varchar(20) NOT NULL DEFAULT 'null' COMMENT '手机号',
-  `createtime` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `updatetime` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `deletetime` int(11) DEFAULT NULL COMMENT '删除时间',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1正常用户，0被封',
+  `email` varchar(32) DEFAULT NULL COMMENT '邮箱',
+  `phone` varchar(20) DEFAULT NULL COMMENT '手机号',
+  `createtime` int(11) NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) NOT NULL COMMENT '更新时间',
+  `deletetime` int(11) NOT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户表';
