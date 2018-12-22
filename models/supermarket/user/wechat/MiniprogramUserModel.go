@@ -1,4 +1,4 @@
-package user
+package wechat
 
 import "github.com/flashfeifei/supermarket/models/supermarket"
 
@@ -8,10 +8,10 @@ type MiniprogramUserModel struct {
 	Id                      int64 `orm:"pk;auto"`
 	Openid                  string
 	Unionid                 string
-	AccountType             int
-	Createtime              int
-	Updatetime              int
-	Deletetime              int
+	AccountType             int64
+	Createtime              int64
+	Updatetime              int64
+	Deletetime              int64
 }
 
 func (this *MiniprogramUserModel) TableName() string {
