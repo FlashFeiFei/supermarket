@@ -16,8 +16,6 @@ func RegisterDBSupermarket() {
 
 	orm.RegisterModel(new(user.User))
 
-	//模型生成表
-	orm.RunSyncdb("default", false, true)
 }
 
 func RegisterDBModel() {
