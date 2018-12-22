@@ -13,8 +13,13 @@
 // 路由包
 package routers
 
+import "github.com/flashfeifei/supermarket/routers/supermarket/user/wechat"
+
 // 路由
 func Run() {
 	//后台模块
 	rbacrouter()
+
+	//小程序模块
+	wechat.MiniprogramLoginRouter()
 }

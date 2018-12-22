@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -21,17 +22,20 @@ func (this *MiniprogramUserController) Login() {
 	secret := beego.AppConfig.String("wechat_miniprogram_secret")
 	//获取小程序的code
 	wx_session, err := this.getWxCode2Session(appid, secret, code)
+
 	if err != nil {
-		beego.Error(err)
+		beego.Error(err.Error())
 		this.Data["json"] = err.Error()
-		this.ServeJSONP()
+		this.Ctx.Output.JSON(wx_session, true, true)
+		this.Ctx.Output.Body([]byte(""))
 		return
 	}
 
 	//请求接口成功，异常结果
 	if wx_session["errcode"].(int) != 0 {
 		this.Data["json"] = wx_session
-		this.ServeJSONP()
+		this.Ctx.Output.JSON(wx_session, true, true)
+		this.Ctx.Output.Body([]byte(""))
 		return
 	}
 
@@ -39,12 +43,13 @@ func (this *MiniprogramUserController) Login() {
 	log.Println(wx_session["session_key"])
 	log.Println(wx_session["unionid"])
 	log.Println(wx_session["openid"])
-	this.Data["json"] = wx_session["session_key"].(string)
+	this.Ctx.Output.JSON(wx_session, true, true)
+	this.Ctx.Output.Body([]byte(""))
 	return
 }
 
 //发送请求
-func (this *MiniprogramUserController) getWxCode2Session(appid, secret, code string) (wx_session map[interface{}]interface{}, err error) {
+func (this *MiniprogramUserController) getWxCode2Session(appid, secret, code string) (wx_session map[string]interface{}, err error) {
 	client := http.Client{}
 	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appid, secret, code)
 	response, err := client.Get(url)
@@ -52,12 +57,15 @@ func (this *MiniprogramUserController) getWxCode2Session(appid, secret, code str
 	if err != nil {
 		return nil, err
 	}
+	//读取网络源数据
+	reselt_string, _ := ioutil.ReadAll(response.Body)
+	log.Println(string(reselt_string))
 	//解码
 	json_decode := json.NewDecoder(response.Body)
 	err = json_decode.Decode(wx_session)
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println("解码成功")
 	return wx_session, nil
 }
