@@ -18,5 +18,5 @@ type SupermarketUser struct {
 }
 
 func (this *SupermarketUser) TableName() string {
-	return this.Supermarket.TableName() + "wechat_user"
+	return this.Supermarket.TableName() + "user"
 }
