@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -26,24 +25,26 @@ func (this *MiniprogramUserController) Login() {
 	if err != nil {
 		beego.Error(err.Error())
 		this.Data["json"] = err.Error()
-		this.Ctx.Output.JSON(wx_session, true, true)
+		this.Ctx.Output.JSON(wx_session, false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-
+	beego.Debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+	beego.Debug(wx_session["errcode"])
 	//请求接口成功，异常结果
-	if wx_session["errcode"].(int) != 0 {
-		this.Data["json"] = wx_session
-		this.Ctx.Output.JSON(wx_session, true, true)
+	if wx_session["errcode"] != 0 {
+		beego.Debug("??????????????????????????????")
+		beego.Debug("11111111111111111111111111")
+		this.Ctx.Output.JSON(wx_session, false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-
+	beego.Debug("??????????????????????????????")
 	//正常结果
 	log.Println(wx_session["session_key"])
 	log.Println(wx_session["unionid"])
 	log.Println(wx_session["openid"])
-	this.Ctx.Output.JSON(wx_session, true, true)
+	this.Ctx.Output.JSON(wx_session, false, false)
 	this.Ctx.Output.Body([]byte(""))
 	return
 }
@@ -58,14 +59,14 @@ func (this *MiniprogramUserController) getWxCode2Session(appid, secret, code str
 		return nil, err
 	}
 	//读取网络源数据
-	reselt_string, _ := ioutil.ReadAll(response.Body)
-	log.Println(string(reselt_string))
+	//reselt_string, _ := ioutil.ReadAll(response.Body)
+	//log.Println(string(reselt_string))
 	//解码
 	json_decode := json.NewDecoder(response.Body)
-	err = json_decode.Decode(wx_session)
+	err = json_decode.Decode(&wx_session)
 	if err != nil {
 		return nil, err
 	}
-	log.Println("解码成功")
+	beego.Debug(wx_session)
 	return wx_session, nil
 }
