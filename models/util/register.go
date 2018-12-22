@@ -14,7 +14,7 @@ func RegisterDBAdminModel() {
 //初始化supermarker项目数据库
 func RegisterDBSupermarket() {
 
-	orm.RegisterModel(new(user.User))
+	orm.RegisterModel(new(user.SupermarketUser))
 }
 
 func RegisterDBModel() {

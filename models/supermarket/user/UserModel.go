@@ -3,9 +3,9 @@ package user
 import "github.com/flashfeifei/supermarket/models/supermarket"
 
 //orm模型
-type User struct {
+type SupermarketUser struct {
 	supermarket.Supermarket `orm:"-"`
-	Id                      int `orm:"pk;auto"`
+	Id                      int64 `orm:"pk;auto"`
 	Username                string
 	Password                string
 	Nickname                string
@@ -17,6 +17,6 @@ type User struct {
 	Deletetime              int64
 }
 
-func (this *User) TableName() string {
-	return this.Supermarket.TableName() + "user"
+func (this *SupermarketUser) TableName() string {
+	return this.Supermarket.TableName() + "wechat_user"
 }
