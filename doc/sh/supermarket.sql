@@ -13,3 +13,16 @@ CREATE TABLE `supermarket_user` (
   `deletetime` int(11) NOT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户表';
+
+
+--微信客户表
+CREATE TABLE `supermarket_wechat_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `openid` varchar(30) NOT NULL COMMENT '微信openid',
+  `unionid` varchar(30) NOT NULL COMMENT '微信unionid',
+  `account_type` int(11) NOT NULL COMMENT '微信账号类型、小程序、公众号等',
+  `createtime` int(11) NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) NOT NULL COMMENT '更新时间',
+  `deletetime` int(11) NOT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信用户表';
