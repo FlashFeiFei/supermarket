@@ -36,6 +36,7 @@ import (
 const (
 	applicationJSON = "application/json"
 	applicationXML  = "application/xml"
+	applicationYAML = "application/x-yaml"
 	textXML         = "text/xml"
 )
 
@@ -54,6 +55,13 @@ type ControllerComments struct {
 	Params           []map[string]string
 	MethodParams     []*param.MethodParam
 }
+
+// ControllerCommentsSlice implements the sort interface
+type ControllerCommentsSlice []ControllerComments
+
+func (p ControllerCommentsSlice) Len() int           { return len(p) }
+func (p ControllerCommentsSlice) Less(i, j int) bool { return p[i].Router < p[j].Router }
+func (p ControllerCommentsSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 // Controller defines some basic http request handler operations, such as
 // http context, template and view, session and xsrf.
@@ -265,7 +273,22 @@ func (c *Controller) viewPath() string {
 
 // Redirect sends the redirection response to url with status code.
 func (c *Controller) Redirect(url string, code int) {
+	logAccess(c.Ctx, nil, code)
 	c.Ctx.Redirect(code, url)
+	panic(ErrAbort)
+}
+
+// Set the data depending on the accepted
+func (c *Controller) SetData(data interface{}) {
+	accept := c.Ctx.Input.Header("Accept")
+	switch accept {
+	case applicationJSON:
+		c.Data["json"] = data
+	case applicationXML, textXML:
+		c.Data["xml"] = data
+	default:
+		c.Data["json"] = data
+	}
 }
 
 // Abort stops controller handler and show the error data if code is defined in ErrorMap or code string.
@@ -340,6 +363,11 @@ func (c *Controller) ServeXML() {
 	c.Ctx.Output.XML(c.Data["xml"], hasIndent)
 }
 
+// ServeXML sends xml response.
+func (c *Controller) ServeYAML() {
+	c.Ctx.Output.YAML(c.Data["yaml"])
+}
+
 // ServeFormatted serve Xml OR Json, depending on the value of the Accept header
 func (c *Controller) ServeFormatted() {
 	accept := c.Ctx.Input.Header("Accept")
@@ -348,6 +376,8 @@ func (c *Controller) ServeFormatted() {
 		c.ServeJSON()
 	case applicationXML, textXML:
 		c.ServeXML()
+	case applicationYAML:
+		c.ServeYAML()
 	default:
 		c.ServeJSON()
 	}

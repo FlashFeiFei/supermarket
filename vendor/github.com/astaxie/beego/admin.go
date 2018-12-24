@@ -37,7 +37,7 @@ var beeAdminApp *adminApp
 // FilterMonitorFunc is default monitor filter when admin module is enable.
 // if this func returns, admin module records qbs for this request by condition of this function logic.
 // usage:
-// 	func MyFilterMonitor(method, requestPath string, t time.Duration) bool {
+// 	func MyFilterMonitor(method, requestPath string, t time.Duration, pattern string, statusCode int) bool {
 //	 	if method == "POST" {
 //			return false
 //	 	}
@@ -50,7 +50,7 @@ var beeAdminApp *adminApp
 //	 	return true
 // 	}
 // 	beego.FilterMonitorFunc = MyFilterMonitor.
-var FilterMonitorFunc func(string, string, time.Duration) bool
+var FilterMonitorFunc func(string, string, time.Duration, string, int) bool
 
 func init() {
 	beeAdminApp = &adminApp{
@@ -62,7 +62,7 @@ func init() {
 	beeAdminApp.Route("/healthcheck", healthcheck)
 	beeAdminApp.Route("/task", taskStatus)
 	beeAdminApp.Route("/listconf", listConf)
-	FilterMonitorFunc = func(string, string, time.Duration) bool { return true }
+	FilterMonitorFunc = func(string, string, time.Duration, string, int) bool { return true }
 }
 
 // AdminIndex is the default http.Handler for admin module.
@@ -76,6 +76,18 @@ func adminIndex(rw http.ResponseWriter, r *http.Request) {
 func qpsIndex(rw http.ResponseWriter, r *http.Request) {
 	data := make(map[interface{}]interface{})
 	data["Content"] = toolbox.StatisticsMap.GetMap()
+
+	// do html escape before display path, avoid xss
+	if content, ok := (data["Content"]).(map[string]interface{}); ok {
+		if resultLists, ok := (content["Data"]).([][]string); ok {
+			for i := range resultLists {
+				if len(resultLists[i]) > 0 {
+					resultLists[i][0] = template.HTMLEscapeString(resultLists[i][0])
+				}
+			}
+		}
+	}
+
 	execTpl(rw, data, qpsTpl, defaultScriptsTpl)
 }
 

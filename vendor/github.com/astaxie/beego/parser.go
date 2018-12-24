@@ -114,20 +114,21 @@ type parsedParam struct {
 
 func parserComments(f *ast.FuncDecl, controllerName, pkgpath string) error {
 	if f.Doc != nil {
-		parsedComment, err := parseComment(f.Doc.List)
+		parsedComments, err := parseComment(f.Doc.List)
 		if err != nil {
 			return err
 		}
-		if parsedComment.routerPath != "" {
-			key := pkgpath + ":" + controllerName
-			cc := ControllerComments{}
-			cc.Method = f.Name.String()
-			cc.Router = parsedComment.routerPath
-			cc.AllowHTTPMethods = parsedComment.methods
-			cc.MethodParams = buildMethodParams(f.Type.Params.List, parsedComment)
-			genInfoList[key] = append(genInfoList[key], cc)
+		for _, parsedComment := range parsedComments {
+			if parsedComment.routerPath != "" {
+				key := pkgpath + ":" + controllerName
+				cc := ControllerComments{}
+				cc.Method = f.Name.String()
+				cc.Router = parsedComment.routerPath
+				cc.AllowHTTPMethods = parsedComment.methods
+				cc.MethodParams = buildMethodParams(f.Type.Params.List, parsedComment)
+				genInfoList[key] = append(genInfoList[key], cc)
+			}
 		}
-
 	}
 	return nil
 }
@@ -135,15 +136,16 @@ func parserComments(f *ast.FuncDecl, controllerName, pkgpath string) error {
 func buildMethodParams(funcParams []*ast.Field, pc *parsedComment) []*param.MethodParam {
 	result := make([]*param.MethodParam, 0, len(funcParams))
 	for _, fparam := range funcParams {
-		methodParam := buildMethodParam(fparam, pc)
-		result = append(result, methodParam)
+		for _, pName := range fparam.Names {
+			methodParam := buildMethodParam(fparam, pName.Name, pc)
+			result = append(result, methodParam)
+		}
 	}
 	return result
 }
 
-func buildMethodParam(fparam *ast.Field, pc *parsedComment) *param.MethodParam {
+func buildMethodParam(fparam *ast.Field, name string, pc *parsedComment) *param.MethodParam {
 	options := []param.MethodParamOption{}
-	name := fparam.Names[0].Name
 	if cparam, ok := pc.params[name]; ok {
 		//Build param from comment info
 		name = cparam.name
@@ -176,26 +178,13 @@ func paramInPath(name, route string) bool {
 
 var routeRegex = regexp.MustCompile(`@router\s+(\S+)(?:\s+\[(\S+)\])?`)
 
-func parseComment(lines []*ast.Comment) (pc *parsedComment, err error) {
-	pc = &parsedComment{}
+func parseComment(lines []*ast.Comment) (pcs []*parsedComment, err error) {
+	pcs = []*parsedComment{}
+	params := map[string]parsedParam{}
+
 	for _, c := range lines {
 		t := strings.TrimSpace(strings.TrimLeft(c.Text, "//"))
-		if strings.HasPrefix(t, "@router") {
-			matches := routeRegex.FindStringSubmatch(t)
-			if len(matches) == 3 {
-				pc.routerPath = matches[1]
-				methods := matches[2]
-				if methods == "" {
-					pc.methods = []string{"get"}
-					//pc.hasGet = true
-				} else {
-					pc.methods = strings.Split(methods, ",")
-					//pc.hasGet = strings.Contains(methods, "get")
-				}
-			} else {
-				return nil, errors.New("Router information is missing")
-			}
-		} else if strings.HasPrefix(t, "@Param") {
+		if strings.HasPrefix(t, "@Param") {
 			pv := getparams(strings.TrimSpace(strings.TrimLeft(t, "@Param")))
 			if len(pv) < 4 {
 				logs.Error("Invalid @Param format. Needs at least 4 parameters")
@@ -216,17 +205,39 @@ func parseComment(lines []*ast.Comment) (pc *parsedComment, err error) {
 				p.defValue = pv[3]
 				p.required, _ = strconv.ParseBool(pv[4])
 			}
-			if pc.params == nil {
-				pc.params = map[string]parsedParam{}
+			params[funcParamName] = p
+		}
+	}
+
+	for _, c := range lines {
+		var pc = &parsedComment{}
+		pc.params = params
+
+		t := strings.TrimSpace(strings.TrimLeft(c.Text, "//"))
+		if strings.HasPrefix(t, "@router") {
+			t := strings.TrimSpace(strings.TrimLeft(c.Text, "//"))
+			matches := routeRegex.FindStringSubmatch(t)
+			if len(matches) == 3 {
+				pc.routerPath = matches[1]
+				methods := matches[2]
+				if methods == "" {
+					pc.methods = []string{"get"}
+					//pc.hasGet = true
+				} else {
+					pc.methods = strings.Split(methods, ",")
+					//pc.hasGet = strings.Contains(methods, "get")
+				}
+				pcs = append(pcs, pc)
+			} else {
+				return nil, errors.New("Router information is missing")
 			}
-			pc.params[funcParamName] = p
 		}
 	}
 	return
 }
 
 // direct copy from bee\g_docs.go
-// analisys params return []string
+// analysis params return []string
 // @Param	query		form	 string	true		"The email for login"
 // [query form string true "The email for login"]
 func getparams(str string) []string {
@@ -274,6 +285,7 @@ func genRouterCode(pkgRealpath string) {
 	sort.Strings(sortKey)
 	for _, k := range sortKey {
 		cList := genInfoList[k]
+		sort.Sort(ControllerCommentsSlice(cList))
 		for _, c := range cList {
 			allmethod := "nil"
 			if len(c.AllowHTTPMethods) > 0 {
