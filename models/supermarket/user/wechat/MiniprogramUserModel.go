@@ -1,6 +1,8 @@
 package wechat
 
-import "github.com/flashfeifei/supermarket/models/supermarket"
+import (
+	"github.com/flashfeifei/supermarket/models/supermarket"
+)
 
 //微信用户模型
 type MiniprogramUserModel struct {
@@ -9,6 +11,7 @@ type MiniprogramUserModel struct {
 	Openid                  string
 	Unionid                 string
 	AccountType             int64
+	UserId                  int64
 	Createtime              int64
 	Updatetime              int64
 	Deletetime              int64

@@ -1,9 +1,11 @@
 package user
 
-import "github.com/flashfeifei/supermarket/models/supermarket"
+import (
+	"github.com/flashfeifei/supermarket/models/supermarket"
+)
 
 //orm模型
-type SupermarketUser struct {
+type SupermarketUserModel struct {
 	supermarket.Supermarket `orm:"-"`
 	Id                      int64 `orm:"pk;auto"`
 	Username                string
@@ -17,6 +19,6 @@ type SupermarketUser struct {
 	Deletetime              int64
 }
 
-func (this *SupermarketUser) TableName() string {
+func (this *SupermarketUserModel) TableName() string {
 	return this.Supermarket.TableName() + "user"
 }
