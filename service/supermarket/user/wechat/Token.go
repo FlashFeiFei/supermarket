@@ -22,7 +22,7 @@ type token struct {
 
 //保存信息到缓存
 func (this *token) Save() {
-
+	
 }
 
 //获得缓存的key
