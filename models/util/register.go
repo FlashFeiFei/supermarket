@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/flashfeifei/supermarket/models/admin"
 	"github.com/flashfeifei/supermarket/models/supermarket/user"
+	"github.com/flashfeifei/supermarket/models/supermarket/user/wechat"
 )
 
 //初始化项目的rbac数据库
@@ -13,8 +14,10 @@ func RegisterDBAdminModel() {
 
 //初始化supermarker项目数据库
 func RegisterDBSupermarket() {
-
-	orm.RegisterModel(new(user.SupermarketUser))
+	//supermarket用户模型
+	orm.RegisterModel(new(user.SupermarketUserModel))
+	//注册微信用户模型
+	orm.RegisterModel(new(wechat.MiniprogramUserModel))
 }
 
 func RegisterDBModel() {

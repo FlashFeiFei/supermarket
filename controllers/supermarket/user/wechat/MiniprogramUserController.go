@@ -33,7 +33,8 @@ func (this *MiniprogramUserController) Login() {
 
 	//请求接口成功，异常结果
 	if wx_session["errcode"] != 0 {
-		this.Ctx.Output.JSON(lib.ApiErr(wx_session), false, false)
+		errcode := wx_session["errcode"].(float64)
+		this.Ctx.Output.JSON(lib.ApiErrOpenPlatform(int(errcode), wx_session), false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
