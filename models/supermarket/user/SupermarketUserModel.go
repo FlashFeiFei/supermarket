@@ -2,6 +2,8 @@ package user
 
 import (
 	"github.com/flashfeifei/supermarket/models/supermarket"
+	"strconv"
+	"time"
 )
 
 //orm模型
@@ -21,4 +23,9 @@ type SupermarketUserModel struct {
 
 func (this *SupermarketUserModel) TableName() string {
 	return this.Supermarket.TableName() + "user"
+}
+
+//生成一个账号
+func (this *SupermarketUserModel) CreateUsername() string {
+	return strconv.FormatInt(time.Now().Unix(), 10)
 }

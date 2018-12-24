@@ -64,7 +64,20 @@ func (this *miniprogramLoginService) Register() (model *wechat.MiniprogramUserMo
 	if err == orm.ErrNoRows {
 		o.Begin()
 		//找不到记录
-		//注册一下,微信用户模型
+		//注册一下用户
+		spermarket_user := new(user.SupermarketUserModel)
+		//账号
+		spermarket_user.Username = spermarket_user.CreateUsername()
+		//密码
+		spermarket_user.Password = "123456"
+		//昵称
+		spermarket_user.Nickname = "萌新托尼"
+		spermarket_user.Status = 1
+		user_id, err := o.Insert(&spermarket_user)
+		if err != nil {
+			o.Rollback()
+			return nil, err
+		}
 		miniprogram_user_model.AccountType = wechat.USER_TYPE_MINIPROGRAM
 		miniprogram_user_model.Openid = this.openid
 		miniprogram_user_model.Unionid = this.unionid
@@ -72,20 +85,14 @@ func (this *miniprogramLoginService) Register() (model *wechat.MiniprogramUserMo
 		miniprogram_user_model.Createtime = now_time.Unix()
 		miniprogram_user_model.Updatetime = now_time.Unix()
 		miniprogram_user_model.Deletetime = 0
+		miniprogram_user_model.UserId = user_id
 		_, err = o.Insert(&miniprogram_user_model)
 		if err != nil {
 			//事务回滚
 			o.Rollback()
 			return nil, err
 		}
-		spermarket_user := new(user.SupermarketUser)
-		//账号
-		spermarket_user.Username = ""
-		//密码
-		spermarket_user.Password = "123456"
-		//昵称
-		spermarket_user.Nickname = ""
-		spermarket_user.Status = 1
+
 	}
 	return miniprogram_user_model, nil
 }
