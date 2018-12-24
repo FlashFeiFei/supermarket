@@ -77,10 +77,10 @@ func (this *miniprogramLoginToken) createToken() (string) {
 	algorithm := jwt.HmacSha256(key)
 	claims := jwt.NewClaim()
 	//通过反射去获取对象的属性和属性值
-	getType := reflect.TypeOf(this)
+	getType := reflect.TypeOf(*this)
 	beego.Debug("通过反射获取对象的类型")
 	beego.Debug(getType)
-	getValue := reflect.ValueOf(this)
+	getValue := reflect.ValueOf(*this)
 	beego.Debug("通过反射获取对象的值")
 	beego.Debug(getValue)
 	// 获取方法字段

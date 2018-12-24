@@ -32,16 +32,12 @@ func (this *MiniprogramUserController) Login() {
 	}
 
 	//请求接口成功，异常结果
-	//if wx_session["errcode"] != 0 {
-	//	errcode := wx_session["errcode"].(float64)
-	//	this.Ctx.Output.JSON(lib.ApiErrOpenPlatform(int(errcode), wx_session), false, false)
-	//	this.Ctx.Output.Body([]byte(""))
-	//	return
-	//}
-
-	wx_session["session_key"] = "session_key123456"
-	wx_session["unionid"] = "unionid123456"
-	wx_session["openid"] = "openid123456"
+	if wx_session["errcode"] != 0 {
+		errcode := wx_session["errcode"].(float64)
+		this.Ctx.Output.JSON(lib.ApiErrOpenPlatform(int(errcode), wx_session), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
 
 	//正常结果
 	log.Println(wx_session["session_key"])

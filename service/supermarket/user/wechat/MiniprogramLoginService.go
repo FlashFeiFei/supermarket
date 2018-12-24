@@ -53,7 +53,7 @@ func (this *miniprogramLoginService) register() (miniprogram_user_model *wechat.
 	qs := o.QueryTable(miniprogram_user_model)
 	//获取微信小程序的用户
 	err = qs.Filter("openid", this.openid).Filter("unionid", this.unionid).Filter("account_type", wechat.USER_TYPE_MINIPROGRAM).
-		Filter("deletetime__gt", 0).One(miniprogram_user_model)
+		One(miniprogram_user_model)
 
 	if err == orm.ErrNoRows {
 		beego.Debug("找不到找不到找不到好几次")
