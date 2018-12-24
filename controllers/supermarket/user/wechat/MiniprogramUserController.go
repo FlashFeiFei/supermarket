@@ -29,12 +29,9 @@ func (this *MiniprogramUserController) Login() {
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-	beego.Debug("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 	beego.Debug(wx_session["errcode"])
 	//请求接口成功，异常结果
 	if wx_session["errcode"] != 0 {
-		beego.Debug("??????????????????????????????")
-		beego.Debug("11111111111111111111111111")
 		this.Ctx.Output.JSON(wx_session, false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
