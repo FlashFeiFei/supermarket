@@ -21,6 +21,7 @@ CREATE TABLE `supermarket_wechat_user` (
   `openid` varchar(30) NOT NULL COMMENT '微信openid',
   `unionid` varchar(30) NOT NULL COMMENT '微信unionid',
   `account_type` int(11) NOT NULL COMMENT '微信账号类型、小程序、公众号等',
+  `user_id` int(11) NOT NULL COMMENT 'supermarket的id',
   `createtime` int(11) NOT NULL COMMENT '创建时间',
   `updatetime` int(11) NOT NULL COMMENT '更新时间',
   `deletetime` int(11) NOT NULL COMMENT '删除时间',
