@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/flashfeifei/supermarket/lib"
+	"github.com/flashfeifei/supermarket/service/supermarket/user/wechat"
 	"log"
 	"net/http"
 )
@@ -24,24 +26,32 @@ func (this *MiniprogramUserController) Login() {
 
 	if err != nil {
 		beego.Error(err.Error())
-		this.Data["json"] = err.Error()
-		this.Ctx.Output.JSON(wx_session, false, false)
+		this.Ctx.Output.JSON(lib.ApiErr(wx_session), false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-	beego.Debug(wx_session["errcode"])
+
 	//请求接口成功，异常结果
 	if wx_session["errcode"] != 0 {
-		this.Ctx.Output.JSON(wx_session, false, false)
+		this.Ctx.Output.JSON(lib.ApiErr(wx_session), false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-	beego.Debug("??????????????????????????????")
+
 	//正常结果
 	log.Println(wx_session["session_key"])
 	log.Println(wx_session["unionid"])
 	log.Println(wx_session["openid"])
-	this.Ctx.Output.JSON(wx_session, false, false)
+	mini_login_service := wechat.NewMiniProgramLoginService(wx_session["openid"].(string), wx_session["unionid"].(string), wx_session["session_key"].(string))
+	token, err := mini_login_service.Login()
+	if err != nil {
+		beego.Error(err.Error())
+		this.Data["json"] = err.Error()
+		this.Ctx.Output.JSON(lib.ApiErr(wx_session), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
+	this.Ctx.Output.JSON(lib.ApiSuccess(token), false, false)
 	this.Ctx.Output.Body([]byte(""))
 	return
 }
