@@ -43,29 +43,28 @@ func (this *miniprogramLoginService) Login() (token *miniprogramLoginToken, err 
 }
 
 //判断用户是否存在
-func (this *miniprogramLoginService) UserExist(openid, unionid string) (exist bool) {
+func (this *miniprogramLoginService) UserExist(openid, unionid string) (miniprogram_user_model *wechat.MiniprogramUserModel, exist bool) {
 	exist = false
 	o := orm.NewOrm()
-	miniprogram_user_model := new(wechat.MiniprogramUserModel)
 	qs := o.QueryTable(miniprogram_user_model)
 	//获取微信小程序的用户
 	err := qs.Filter("openid", this.openid).Filter("unionid", this.unionid).Filter("account_type", wechat.USER_TYPE_MINIPROGRAM).
 		One(miniprogram_user_model)
 	if err != nil && err == orm.ErrNoRows {
-		return exist
+		return nil, exist
 	} else {
 		panic(err)
 	}
 	exist = true
-	return exist
+	return miniprogram_user_model, exist
 }
 
 //微信小程序用户注册
 func (this *miniprogramLoginService) register() (miniprogram_user_model *wechat.MiniprogramUserModel, err error) {
 
-	exist := this.UserExist(this.openid, this.unionid)
+	miniprogram_user_model, exist := this.UserExist(this.openid, this.unionid)
 	if exist {
-		return nil, errors.New(this.openid + "已存在")
+		return miniprogram_user_model, errors.New(this.openid + "已存在")
 	}
 	o := orm.NewOrm()
 	//事务开启
@@ -91,7 +90,6 @@ func (this *miniprogramLoginService) register() (miniprogram_user_model *wechat.
 			return nil, err
 		}
 		//小程序用户模型
-		miniprogram_user_model = new(wechat.MiniprogramUserModel)
 		//注册微信用户，并绑定supermarket用户
 		miniprogram_user_model.AccountType = wechat.USER_TYPE_MINIPROGRAM
 		miniprogram_user_model.Openid = this.openid
