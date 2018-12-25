@@ -44,8 +44,8 @@ func (this *miniprogramLoginToken) Save() (error) {
 	if err != nil {
 		return err
 	}
-	//缓存一天
-	redis_cache.Put(this.GetCacheKey(), this.createToken(), 86400*time.Second)
+	//缓存12小时
+	redis_cache.Put(this.GetCacheKey(), this.CreateToken(), 43200*time.Second)
 	return nil
 }
 
@@ -71,7 +71,7 @@ func (this *miniprogramLoginToken) GetCacheKey() (string) {
 }
 
 //创建token
-func (this *miniprogramLoginToken) createToken() (string) {
+func (this *miniprogramLoginToken) CreateToken() (string) {
 	key := beego.AppConfig.String("jwt_hsmac256_key")
 	//获得加密的key
 	algorithm := jwt.HmacSha256(key)

@@ -6,7 +6,6 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/flashfeifei/supermarket/lib"
 	"github.com/flashfeifei/supermarket/service/supermarket/user/wechat"
-	"log"
 	"net/http"
 )
 
@@ -31,18 +30,21 @@ func (this *MiniprogramUserController) Login() {
 		return
 	}
 
-	//请求接口成功，异常结果
-	if wx_session["errcode"] != 0 {
-		errcode := wx_session["errcode"].(float64)
-		this.Ctx.Output.JSON(lib.ApiErrOpenPlatform(int(errcode), wx_session), false, false)
-		this.Ctx.Output.Body([]byte(""))
-		return
-	}
-
-	//正常结果
-	log.Println(wx_session["session_key"])
-	log.Println(wx_session["unionid"])
-	log.Println(wx_session["openid"])
+	////请求接口成功，异常结果
+	//if wx_session["errcode"] != 0 {
+	//	errcode := wx_session["errcode"].(float64)
+	//	this.Ctx.Output.JSON(lib.ApiErrOpenPlatform(int(errcode), wx_session), false, false)
+	//	this.Ctx.Output.Body([]byte(""))
+	//	return
+	//}
+	//
+	////正常结果
+	//log.Println(wx_session["session_key"])
+	//log.Println(wx_session["unionid"])
+	//log.Println(wx_session["openid"])
+	wx_session["session_key"] = "session_key123456"
+	wx_session["unionid"] = "unionid123456"
+	wx_session["openid"] = "openid123456"
 	mini_login_service := wechat.NewMiniProgramLoginService(wx_session["openid"].(string), wx_session["unionid"].(string), wx_session["session_key"].(string))
 	token, err := mini_login_service.Login()
 	if err != nil {
@@ -51,7 +53,7 @@ func (this *MiniprogramUserController) Login() {
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-	this.Ctx.Output.JSON(lib.ApiSuccess(token), false, false)
+	this.Ctx.Output.JSON(lib.ApiSuccess(token.CreateToken()), false, false)
 	this.Ctx.Output.Body([]byte(""))
 	return
 }
