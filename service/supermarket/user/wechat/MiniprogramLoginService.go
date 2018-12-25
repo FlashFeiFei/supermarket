@@ -67,8 +67,6 @@ func (this *miniprogramLoginService) register() (miniprogram_user_model *wechat.
 		return miniprogram_user_model, errors.New(this.openid + "已存在")
 	}
 	o := orm.NewOrm()
-	//事务开启
-	o.Begin()
 	//找不到记录
 	//注册一下用户
 	spermarket_user := new(user.SupermarketUserModel)
@@ -76,6 +74,8 @@ func (this *miniprogramLoginService) register() (miniprogram_user_model *wechat.
 	account := spermarket_user.CreateUsername()
 	err = qs.Filter("username", account).One(spermarket_user)
 	if err == orm.ErrNoRows {
+		//事务开启
+		o.Begin()
 		//注册supermarket用户
 		spermarket_user.Username = account
 		spermarket_user.Password = "123456"
@@ -108,7 +108,6 @@ func (this *miniprogramLoginService) register() (miniprogram_user_model *wechat.
 		o.Commit()
 		return miniprogram_user_model, nil
 	} else {
-		o.Rollback()
 		return nil, err
 	}
 }
