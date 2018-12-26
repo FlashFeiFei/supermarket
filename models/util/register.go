@@ -3,6 +3,7 @@ package util
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/flashfeifei/supermarket/models/admin"
+	"github.com/flashfeifei/supermarket/models/supermarket/attachment"
 	"github.com/flashfeifei/supermarket/models/supermarket/user"
 	"github.com/flashfeifei/supermarket/models/supermarket/user/wechat"
 )
@@ -18,6 +19,9 @@ func RegisterDBSupermarket() {
 	orm.RegisterModel(new(user.SupermarketUserModel))
 	//注册微信用户模型
 	orm.RegisterModel(new(wechat.MiniprogramUserModel))
+
+	//注册附件模型
+	orm.RegisterModel(new(attachment.SupermarketAttachmentModel))
 }
 
 func RegisterDBModel() {
