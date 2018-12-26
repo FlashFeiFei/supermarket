@@ -9,6 +9,6 @@ func (this *AttachmentController) Index() {
 
 	} else {
 		this.Layout = this.GetTemplate() + "/attachment/layout.html"
-		this.TplName = this.GetTemplate() + "/attachment/user.html"
+		this.TplName = this.GetTemplate() + "/attachment/attachment.html"
 	}
 }
