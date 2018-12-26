@@ -13,7 +13,10 @@
 // 路由包
 package routers
 
-import "github.com/flashfeifei/supermarket/routers/supermarket/user/wechat"
+import (
+	"github.com/flashfeifei/supermarket/routers/admin/attachment"
+	"github.com/flashfeifei/supermarket/routers/supermarket/user/wechat"
+)
 
 // 路由
 func Run() {
@@ -22,4 +25,7 @@ func Run() {
 
 	//小程序模块
 	wechat.MiniprogramLoginRouter()
+
+	//后台附件管理路由注册
+	attachment.AdminAttachmentRouterRegister()
 }
