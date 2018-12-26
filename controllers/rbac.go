@@ -86,7 +86,8 @@ func AccessRegister() {
 				}
 			} else {
 				if len(params) > 3 {
-					ctx.Output.Body([]byte("ding ding dang"))
+					//ctx.Output.Body([]byte("ding ding dang"))
+					return
 				}
 			}
 
