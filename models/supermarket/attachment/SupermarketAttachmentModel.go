@@ -8,7 +8,6 @@ type SupermarketAttachmentModel struct {
 	Title                   string
 	Filepath                string
 	Filetype                int64
-	MimeType                string
 	Links                   string
 	Updatetime              int64
 	Createtime              int64

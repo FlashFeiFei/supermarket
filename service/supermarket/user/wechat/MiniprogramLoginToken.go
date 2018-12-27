@@ -36,14 +36,7 @@ func NewMiniprogroamLoginToken(supermarket_user_id int64, openid, unionid, sessi
 //保存信息到缓存
 func (this *miniprogramLoginToken) Save() (error) {
 	//缓存
-	conn := beego.AppConfig.String("cache::redis_host")
-	pwd := beego.AppConfig.String("cache::redis_password")
-	dbnumber := beego.AppConfig.String("cache::redis_dbnumber")
-	collectionName := beego.AppConfig.String("cache::collection_name")
-	redis_cache, err := lib.GetRedisInstance(collectionName, conn, dbnumber, pwd)
-	if err != nil {
-		return err
-	}
+	redis_cache := lib.GetRedisInstance()
 	//缓存12小时
 	redis_cache.Put(this.GetCacheKey(), this.CreateToken(), 43200*time.Second)
 	return nil
@@ -52,14 +45,7 @@ func (this *miniprogramLoginToken) Save() (error) {
 //获取token
 func (this *miniprogramLoginToken) GetToken() (string, error) {
 	//缓存
-	conn := beego.AppConfig.String("cache::redis_host")
-	pwd := beego.AppConfig.String("cache::redis_password")
-	dbnumber := beego.AppConfig.String("cache::redis_dbnumber")
-	collectionName := beego.AppConfig.String("cache::collection_name")
-	redis_cache, err := lib.GetRedisInstance(collectionName, conn, dbnumber, pwd)
-	if err != nil {
-		return "", err
-	}
+	redis_cache := lib.GetRedisInstance()
 	token := redis_cache.Get(this.GetCacheKey())
 	return token.(string), nil
 }

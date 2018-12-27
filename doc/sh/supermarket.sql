@@ -32,10 +32,9 @@ CREATE TABLE `supermarket_wechat_user` (
 -- 附件表
 CREATE TABLE `supermarket_attachment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL COMMENT '源文件名',
-  `filepath` varchar(255) NOT NULL COMMENT '文件路径',
-  `filetype` int(11) NOT NULL COMMENT '文件类型，图片、视频、音频',
-  `mime_type` varchar(255) NOT NULL COMMENT 'Mime Type 给计算机看的',
+  `title` varchar(255) DEFAULT NULL COMMENT '源文件名',
+  `filepath` varchar(255) DEFAULT NULL COMMENT '文件路径',
+  `filetype` int(11) NOT NULL DEFAULT '0' COMMENT '文件类型，图片、视频、音频',
   `links` varchar(255) DEFAULT NULL COMMENT '外部的链接',
   `updatetime` int(11) NOT NULL DEFAULT '0',
   `createtime` int(11) NOT NULL DEFAULT '0',
