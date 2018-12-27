@@ -25,6 +25,7 @@ func registerRedisInstance() () {
 		panic(err)
 	}
 	redis_cache = adapter
+
 }
 
 //获得实例
