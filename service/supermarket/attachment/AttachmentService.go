@@ -3,15 +3,18 @@ package attachment
 import (
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/orm"
+	"github.com/flashfeifei/supermarket/lib"
 	"github.com/flashfeifei/supermarket/models/supermarket/attachment"
 	"io"
 	"os"
+	"strconv"
 	"time"
 )
 
 const (
 	UPLOAD_IMAGE_PATH = "static/upload/"
 )
+
 type attachmentService struct {
 }
 
@@ -36,7 +39,7 @@ func (this *attachmentService) AddImageAttachmentByUpload(upload_key string) (in
 
 	//把图片写入文件
 	//打开文件
-	tofile := UPLOAD_IMAGE_PATH + "ddd"
+	tofile := UPLOAD_IMAGE_PATH + strconv.FormatInt(lib.GetUid(), 10)
 	f, err := os.OpenFile(tofile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		return 0, err

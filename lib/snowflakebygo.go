@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"github.com/astaxie/beego"
 	"github.com/holdno/snowFlakeByGo"
 )
 
@@ -12,8 +11,6 @@ var id_worket *snowFlakeByGo.Worker
 
 func init() {
 	registerSnowFlake()
-	beego.Debug("uuuuuuuuuuuuuuuuuuuuuuuuid")
-	beego.Debug(GetUid())
 }
 
 func registerSnowFlake() {
