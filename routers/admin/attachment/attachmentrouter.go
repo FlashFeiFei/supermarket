@@ -6,5 +6,5 @@ import (
 )
 
 func AdminAttachmentRouterRegister(){
-	beego.Router("/attachment/attachment/Index", &attachment.AttachmentController{}, "*:Index")
+	beego.Router("/attachment/attachment/index", &attachment.AttachmentController{}, "*:Index")
 }

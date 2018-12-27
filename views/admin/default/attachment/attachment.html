@@ -1,16 +1,10 @@
 <script type="text/javascript">
-    var statuslist = [{
-        statusid: '2',
-        name: '禁用'
-    }, {
-        statusid: '1',
-        name: '启用'
-    }];
-    var URL = "/rbac/user";
+
+    var URL = "/attachment/attachment";
     $(function () {
-        //用户列表
+        //附件列表
         $("#datagrid").datagrid({
-            // title:'用户列表',
+            // title:'附件列表',
             url: URL + '/index',
             header: '#header',
             fit: true,
@@ -21,83 +15,65 @@
             rownumbers: true,
             singleSelect: true,
             idField: 'Id',
-            pagination: true,
             pageSize: 20,
             pageList: [10, 20, 30, 50, 100],
             columns: [
                 [{
                     field: 'Id',
                     title: 'ID',
-                    sortable: true
-                }, {
-                    field: 'Username',
-                    title: '用户名',
-                    sortable: true
-                }, {
-                    field: 'Nickname',
-                    title: '昵称',
-                    align: 'center',
-                    editor: 'text'
-                }, {
-                    field: 'Email',
-                    title: 'Email',
-                    align: 'center',
-                    editor: 'text'
-                }, {
-                    field: 'Remark',
-                    title: '备注',
-                    width: 100,
-                    align: 'center',
-                    editor: 'text'
-                }, {
-                    field: 'Lastlogintime',
-                    title: '上次登录时间',
-                    align: 'center',
                     sortable: true,
+                    readonly: true
+                }, {
+                    field: 'Title',
+                    title: '标题',
+                    sortable: true
+                }, {
+                    field: 'Filepath',
+                    title: '自己服务器的附件',
+                    align: 'center',
+                    editor: 'text',
+                    readonly: true,
                     formatter: function (value, row, index) {
-                        if (value) return phpjs.date("Y-m-d H:i:s", phpjs.strtotime(value));
+                        if (value) return '<a href="' + value + '">' + value + '</a>'
                         return value;
                     }
                 }, {
-                    field: 'Lastip',
-                    title: '上次登录IP',
-                    align: 'center'
-                }, {
-                    field: 'Logincount',
-                    title: '登录次数',
+                    field: 'Links',
+                    title: '外链服务器附件',
                     align: 'center',
-                    sortable: true
+                    editor: 'text',
+                    readonly: true,
+                    formatter: function (value, row, index) {
+                        if (value) return '<a href="' + value + '">' + value + '</a>'
+                        return value;
+                    }
+                }, {
+                    field: 'Filetype',
+                    title: '文件类型',
+                    align: 'center',
+                    editor: 'text',
+                    readonly: true
                 }, {
                     field: 'Createtime',
                     title: ' 创建时间',
                     align: 'center',
                     sortable: true,
                     formatter: function (value, row, index) {
-                        if (value) return phpjs.date("Y-m-d H:i:s", phpjs.strtotime(value));
-                        return value;
-                    }
-                }, {
-                    field: 'Status',
-                    title: '状态',
-                    width: 100,
-                    align: 'center',
-                    sortable: true,
-                    formatter: function (value) {
-                        for (var i = 0; i < statuslist.length; i++) {
-                            if (statuslist[i].statusid == value) return statuslist[i].name;
-                        }
+                        if (value) return phpjs.date("Y-m-d H:i:s", value);
                         return value;
                     },
-                    editor: {
-                        type: 'combobox',
-                        options: {
-                            valueField: 'statusid',
-                            textField: 'name',
-                            data: statuslist,
-                            required: true
-                        }
-                    }
-                }]
+                    readonly: true
+                }, {
+                    field: 'Updatetime',
+                    title: ' 更新时间',
+                    align: 'center',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        if (value) return phpjs.date("Y-m-d H:i:s", value);
+                        return value;
+                    },
+                    readonly: true
+                },]
             ],
             onAfterEdit: function (index, data, changes) {
                 if (vac.isEmpty(changes)) {
@@ -165,37 +141,6 @@
                 }
             }]
         });
-        //创建修改密码窗口
-        $("#dialog2").dialog({
-            modal: true,
-            resizable: true,
-            top: 150,
-            closed: true,
-            buttons: [{
-                text: '保存',
-                iconCls: 'icon-save',
-                handler: function () {
-                    var selectedRow = $("#datagrid").datagrid('getSelected');
-                    var password = $('#password').val();
-                    vac.ajax(URL + '/UpdateUserPasswd', {
-                        Id: selectedRow.Id,
-                        Password: password
-                    }, 'post', function (r) {
-                        if (r.status) {
-                            $("#dialog2").dialog("close");
-                        } else {
-                            vac.alert(r.info);
-                        }
-                    })
-                }
-            }, {
-                text: '取消',
-                iconCls: 'icon-cancel',
-                handler: function () {
-                    $("#dialog2").dialog("close");
-                }
-            }]
-        });
 
     })
 
@@ -214,6 +159,7 @@
         }
         $('#datagrid').datagrid('endEdit', vac.getindex("datagrid"));
     }
+
     //取消
     function cancelrow() {
         if (!$("#datagrid").datagrid("getSelected")) {
@@ -222,6 +168,7 @@
         }
         $("#datagrid").datagrid("cancelEdit", vac.getindex("datagrid"));
     }
+
     //刷新
     function reloadrow() {
         $("#datagrid").datagrid("reload");
@@ -274,23 +221,20 @@
     <div class="m-toolbar">
         <div class="m-title"></div>
         <div class="m-left">
-            <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton">新增</a>
+            <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton">上传附件</a>
             <a href="#" icon='icon-edit' plain="true" onclick="editrow()" class="easyui-linkbutton">编辑</a>
             <a href="#" icon='icon-save' plain="true" onclick="saverow()" class="easyui-linkbutton">保存</a>
             <a href="#" icon='icon-cancel' plain="true" onclick="delrow()" class="easyui-linkbutton">删除</a>
             <a href="#" icon='icon-reload' plain="true" onclick="reloadrow()" class="easyui-linkbutton">刷新</a>
-            <a href="#" icon='icon-edit' plain="true" onclick="updateuserpassword()"
-               class="easyui-linkbutton">修改用户密码</a>
         </div>
     </div>
 </div>
 <!--表格内的右键菜单-->
 <div id="mm" class="easyui-menu" style="width:120px;display: none">
-    <div iconCls='icon-add' onclick="addrow()">新增</div>
+    <div iconCls='icon-add' onclick="addrow()">上传附件</div>
     <div iconCls="icon-edit" onclick="editrow()">编辑</div>
     <div iconCls='icon-save' onclick="saverow()">保存</div>
     <div iconCls='icon-cancel' onclick="cancelrow()">取消</div>
-    <div iconCls='icon-edit' onclick="updateuserpassword()">修改密码</div>
     <div class="menu-sep"></div>
     <div iconCls='icon-cancel' onclick="delrow()">删除</div>
     <div iconCls='icon-reload' onclick="reloadrow()">刷新</div>
@@ -299,74 +243,88 @@
 </div>
 <!--表头的右键菜单-->
 <div id="mm1" class="easyui-menu" style="width:120px;display: none">
-    <div icon='icon-add' onclick="addrow()">新增</div>
+    <div icon='icon-add' onclick="addrow()">上传附件</div>
 </div>
-<div id="dialog" title="添加用户" style="width:400px;height:400px;">
+
+
+<!--上传弹窗-->
+<div id="dialog" title="上传附件" style="width:400px;height:400px;">
     <div style="padding:20px 20px 40px 80px;">
         <form id="form1" method="post">
-            <table>
-                <tr>
-                    <td>用户名：</td>
-                    <td>
-                        <input name="Username" class="easyui-validatebox" required="true" validType='account[6,20]'/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>昵称：</td>
-                    <td>
-                        <input name="Nickname" class="easyui-validatebox" required="true" validType="inputlen[2,20]"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>密码：</td>
-                    <td>
-                        <input id="passwd" name="Password" type="password" class="easyui-validatebox" required="true"
-                               validType="password[6,20]"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>重复密码：</td>
-                    <td>
-                        <input name="Repassword" type="password" class="easyui-validatebox" required="true"
-                               validType="equals['#passwd']"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Email：</td>
-                    <td>
-                        <input name="Email" class="easyui-validatebox" validType="email"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>状态：</td>
-                    <td>
-                        <select name="Status" style="width:153px;" class="easyui-combobox " editable="false"
-                                required="true">
-                            <option value="1">启用</option>
-                            <option value="2">禁用</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>备注：</td>
-                    <td>
-                        <textarea name="Remark" class="easyui-validatebox" validType="length[0,200]"></textarea>
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group">
+                <div class='col-md-4'>
+                    <div align="center">
+                        <img src="{{.config.Photo}}" id='logoimg' class="am-img-responsive" alt="图片"
+                             style="border:1px red solid;height: 260px; width: 260px;"/>
+                        <p>请上传格式为.png .jpg .jpeg的图片。</p>
+
+                        <p>上传完毕后需要点击左边曾加按钮才能生效。</p>
+
+                        <div id='uploadphotoconfirm' style='color:red'></div>
+                        <div>
+                            <button type="submit" class="btn btn-default" id='upload_button'>上传Logo</button>
+                        </div>
+                        <div class="btn btn-success"><a id='lookphoto' href="{{.config.Photo}}"
+                                                        target="_blank">查看Logo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
-<div id="dialog2" title="修改用户密码" style="width:400px;height:200px;">
-    <div style="padding:20px 20px 40px 80px;">
-        <table>
-            <tr>
-                <td>密码：</td>
-                <td>
-                    <input name="Password" type="password" id="password" class="easyui-validatebox" required="true"
-                           validType="password[6,20]"/>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
+
+
+<script src="/static/tool/ajaxupload.js"></script>
+<script>
+    $(function () {
+        var button = $('#upload_button'), interval;
+        var confirmdiv = $('#uploadphotoconfirm');
+        var fileType = "ptic", fileNum = "one";
+        new AjaxUpload(button, {
+            action: "/public/file/upload?dir=image",
+            name: 'imgFile',
+            responseType: 'json',
+            onSubmit: function (file, ext) {
+                if (fileType == "pic") {
+                    if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)) {
+                        this.setData({
+                            'info': '文件类型为图片'
+                        });
+                    } else {
+                        confirmdiv.text('文件格式错误，请上传格式为.png .jpg .jpeg 的图片');
+                        return false;
+                    }
+                }
+
+                confirmdiv.text('文件上传中');
+
+                if (fileNum == 'one')
+                    this.disable();
+
+                interval = window.setInterval(function () {
+                    var text = confirmdiv.text();
+                    if (text.length <= 5) {
+                        confirmdiv.text('文件上传中...');
+                    } else {
+                        confirmdiv.text('文件上传中');
+                    }
+                }, 200);
+            },
+            onComplete: function (file, response) {
+                if (response.error == 1) {
+                    confirmdiv.text(response.message);
+                } else {
+                    confirmdiv.text("上传完成");
+                    $("#logoimg").attr("src", response.url);
+                    $('#lookphoto').attr("href", response.url);
+                    $("#uploadlogo").html("<input hidden='hidden' type='hidden'  name='photo' value='" + response.url + "'>");
+                }
+
+                window.clearInterval(interval);
+                this.enable();
+            }
+        });
+    });
+
+</script>

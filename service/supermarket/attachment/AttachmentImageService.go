@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/orm"
 	"github.com/flashfeifei/supermarket/lib"
-	"github.com/flashfeifei/supermarket/models/supermarket/attachment"
+	am "github.com/flashfeifei/supermarket/models/supermarket/attachment"
 	"io"
 	"os"
 	"strconv"
@@ -51,9 +51,9 @@ func (this *attachmentImageService) AddImageAttachmentByUpload(upload_key string
 		return 0, err
 	}
 	o := orm.NewOrm()
-	attachment_model := new(attachment.SupermarketAttachmentModel)
+	attachment_model := new(am.SupermarketAttachmentModel)
 	attachment_model.Filepath = tofile
-	attachment_model.Filetype = attachment.FILE_TYPE_IMAGE
+	attachment_model.Filetype = am.FILE_TYPE_IMAGE
 	attachment_model.Createtime = time.Now().Unix()
 	attachment_model.Updatetime = time.Now().Unix()
 	attachment_model.Deletetime = 0
@@ -67,9 +67,9 @@ func (this *attachmentImageService) AddImageAttachmentByUpload(upload_key string
 //通过外链添加一张图片
 func (this *attachmentImageService) AddImageAttachmentByLinks(links string) (int64, error) {
 	o := orm.NewOrm()
-	attachment_model := new(attachment.SupermarketAttachmentModel)
+	attachment_model := new(am.SupermarketAttachmentModel)
 	attachment_model.Links = links
-	attachment_model.Filetype = attachment.FILE_TYPE_IMAGE
+	attachment_model.Filetype = am.FILE_TYPE_IMAGE
 	attachment_model.Createtime = time.Now().Unix()
 	attachment_model.Updatetime = time.Now().Unix()
 	attachment_model.Deletetime = 0
@@ -83,7 +83,7 @@ func (this *attachmentImageService) AddImageAttachmentByLinks(links string) (int
 //更新一下属性
 func (this *attachmentImageService) UpdateImageAttachmentInfo(id int64, field map[string]string) (num int64, err error) {
 	o := orm.NewOrm()
-	attachment_model := new(attachment.SupermarketAttachmentModel)
+	attachment_model := new(am.SupermarketAttachmentModel)
 	attachment_model.Id = id
 	err = o.Read(attachment_model)
 	if err != nil {
@@ -106,7 +106,7 @@ func (this *attachmentImageService) UpdateImageAttachmentInfo(id int64, field ma
 //删除一个文件
 func (this *attachmentImageService) DeleteImageAttachment(id int64) (num int64, err error) {
 	o := orm.NewOrm()
-	attachment_model := new(attachment.SupermarketAttachmentModel)
+	attachment_model := new(am.SupermarketAttachmentModel)
 	attachment_model.Id = id
 	err = o.Read(attachment_model)
 	if err != nil {
