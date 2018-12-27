@@ -18,7 +18,7 @@ const (
 type attachmentImageService struct {
 }
 
-func NewAttachmentService() *attachmentImageService {
+func NewAttachmentImageService() *attachmentImageService {
 	return &attachmentImageService{}
 }
 
