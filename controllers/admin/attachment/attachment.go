@@ -1,6 +1,7 @@
 package attachment
 
 import (
+	"github.com/flashfeifei/supermarket/lib"
 	"github.com/flashfeifei/supermarket/service/supermarket/attachment"
 )
 
@@ -21,7 +22,7 @@ func (this *AttachmentController) Index() {
 		} else {
 			sort = "Id"
 		}
-		attachment_service:= attachment.NewAttachmentService()
+		attachment_service := attachment.NewAttachmentService()
 		users, count := attachment_service.Getattachmentlist(page, page_size, sort)
 		this.Data["json"] = &map[string]interface{}{"total": count, "rows": &users}
 		this.ServeJSON()
@@ -29,4 +30,18 @@ func (this *AttachmentController) Index() {
 		this.Layout = this.GetTemplate() + "/attachment/layout.html"
 		this.TplName = this.GetTemplate() + "/attachment/attachment.html"
 	}
+}
+
+//上传一张图片
+func (this *AttachmentController) UploadImage() {
+	image_service := attachment.NewAttachmentImageService()
+	image_id, err := image_service.AddImageAttachmentByUpload("imgFile",this.Ctx)
+	if err != nil {
+		this.Ctx.Output.JSON(lib.ApiErr(err), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
+	this.Ctx.Output.JSON(lib.ApiSuccess(image_id), false, false)
+	this.Ctx.Output.Body([]byte(""))
+	return
 }

@@ -25,11 +25,10 @@ func NewAttachmentImageService() *attachmentImageService {
 //通过上传添加一张图片
 //upload_key是请求协议中，哪个字段保存了图片的信息
 //剩下的都是数据库字段
-func (this *attachmentImageService) AddImageAttachmentByUpload(upload_key string) (int64, error) {
-	beego_context := context.NewContext()
+func (this *attachmentImageService) AddImageAttachmentByUpload(upload_key string, ctx *context.Context) (int64, error) {
 	//golang上传文件
 	//从网络中读取文件
-	file, _, err := beego_context.Request.FormFile(upload_key)
+	file, _, err := ctx.Request.FormFile(upload_key)
 	if err != nil {
 		//发生错误
 		return 0, err

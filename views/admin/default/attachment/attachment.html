@@ -282,7 +282,7 @@
         var confirmdiv = $('#uploadphotoconfirm');
         var fileType = "ptic", fileNum = "one";
         new AjaxUpload(button, {
-            action: "/public/file/upload?dir=image",
+            action: "/attachment/attachment/uploadimage",
             name: 'imgFile',
             responseType: 'json',
             onSubmit: function (file, ext) {
@@ -312,6 +312,7 @@
                 }, 200);
             },
             onComplete: function (file, response) {
+                console.log(response)
                 if (response.error == 1) {
                     confirmdiv.text(response.message);
                 } else {
