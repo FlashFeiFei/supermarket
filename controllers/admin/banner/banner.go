@@ -25,8 +25,8 @@ func (this *BannerController) Index() {
 			sort = "Id"
 		}
 		banner_service := banner.NewBannerService()
-		users, count := banner_service.Getattachmentlist(page, page_size, sort)
-		this.Data["json"] = &map[string]interface{}{"total": count, "rows": &users}
+		banners, count := banner_service.Getattachmentlist(page, page_size, sort)
+		this.Data["json"] = &map[string]interface{}{"total": count, "rows": &banners}
 		this.ServeJSON()
 	} else {
 		this.Layout = this.GetTemplate() + "/banner/layout.html"

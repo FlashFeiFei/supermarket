@@ -95,11 +95,14 @@ func (this *bannerService) Getattachmentlist(page int64, page_size int64, sort s
 	attachment_service := attachment.NewAttachmentService()
 	for _, b := range banners {
 		attachment_id := b["AttachmentId"].(int64)
-		att_model, _ := image_service.QueryImageAttachment(attachment_id)
+		att_model, err := image_service.QueryImageAttachment(attachment_id)
+		if err != nil {
+			continue
+		}
 		//有外链取外链
 		if len(att_model.Links) == 0 {
-			b["Url"] =  attachment_service.ChangeFilepath(att_model.Filepath)
-		}else {
+			b["Url"] = attachment_service.ChangeFilepath(att_model.Filepath)
+		} else {
 			b["Url"] = att_model.Links
 		}
 	}

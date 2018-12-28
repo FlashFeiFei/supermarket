@@ -5,6 +5,7 @@ import (
 	"github.com/flashfeifei/supermarket/models/admin"
 	"github.com/flashfeifei/supermarket/models/supermarket/attachment"
 	"github.com/flashfeifei/supermarket/models/supermarket/banner"
+	"github.com/flashfeifei/supermarket/models/supermarket/theme"
 	"github.com/flashfeifei/supermarket/models/supermarket/user"
 	"github.com/flashfeifei/supermarket/models/supermarket/user/wechat"
 )
@@ -23,7 +24,10 @@ func RegisterDBSupermarket() {
 
 	//注册附件模型
 	orm.RegisterModel(new(attachment.SupermarketAttachmentModel))
+	//注册banner
 	orm.RegisterModel(new(banner.SupermarketBannerModel))
+	//注册theme
+	orm.RegisterModel(new(theme.SupermarketThemeModel))
 }
 
 func RegisterDBModel() {

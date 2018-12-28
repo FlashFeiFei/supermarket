@@ -10,12 +10,14 @@
 	See the License for the specific language governing permissions and
 	limitations under the License
 */
+
 // 路由包
 package routers
 
 import (
 	"github.com/flashfeifei/supermarket/routers/admin/attachment"
 	"github.com/flashfeifei/supermarket/routers/admin/banner"
+	"github.com/flashfeifei/supermarket/routers/admin/theme"
 	"github.com/flashfeifei/supermarket/routers/supermarket/user/wechat"
 )
 
@@ -25,9 +27,10 @@ func Run() {
 	rbacrouter()
 	//附件管理路由注册
 	attachment.AdminAttachmentRouterRegister()
-	//banner管理
+	//banner路由
 	banner.AdminBannerRouterRegister()
-
+	//主题路由
+	theme.AdminThemeRouterRegister()
 
 	//小程序模块
 	wechat.MiniprogramLoginRouter()
