@@ -57,9 +57,9 @@ func (this *AttachmentController) UpdateImageInfo() {
 	field := make(map[string]string)
 	field["title"] = this.GetString("Title")
 	field["links"] = this.GetString("Links")
-	attachment_id, err := strconv.ParseInt(this.GetString("AttachmentId"), 10, 64)
+	attachment_id, err := strconv.ParseInt(this.GetString("Id"), 10, 64)
 	if err != nil {
-		this.Ctx.Output.JSON(lib.ApiErr(err), false, false)
+		this.Ctx.Output.JSON(lib.ApiErr(err.Error()), false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
