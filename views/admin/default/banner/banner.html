@@ -69,7 +69,7 @@
                     return;
                 }
                 changes.Id = data.Id;
-                vac.ajax(URL + '/updateimageinfo', changes, 'POST', function (r) {
+                vac.ajax(URL + '/UpdateBanner', data, 'POST', function (r) {
                     if (r.code != 0) {
                         vac.alert(r.info);
                     } else {

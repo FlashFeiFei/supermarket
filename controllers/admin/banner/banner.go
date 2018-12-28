@@ -68,3 +68,29 @@ func (this *BannerController) AddBanner() {
 	this.Ctx.Output.Body([]byte(""))
 	return
 }
+
+//更新banner
+//前端技术有限，我这里只更新了title
+func (this *BannerController) UpdateBanner() {
+	banner_id, err1 := this.GetInt64("Id")
+	attachment_id, err2 := this.GetInt64("AttachmentId")
+	title := this.GetString("Title")
+	if err1 != nil && err2 != nil {
+		ers := make(map[string]interface{})
+		ers["banner_err"] = err1
+		ers["attachment_err"] = err2
+		this.Ctx.Output.JSON(lib.ApiErr(ers), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
+	banner_service := banner.NewBannerService()
+	_, err := banner_service.UpdateBanner(banner_id, attachment_id, title)
+	if err != nil {
+		this.Ctx.Output.JSON(lib.ApiErr(err), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
+	this.Ctx.Output.JSON(lib.ApiSuccess(""), false, false)
+	this.Ctx.Output.Body([]byte(""))
+	return
+}
