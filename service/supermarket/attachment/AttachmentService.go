@@ -29,18 +29,18 @@ func (this *attachmentService) Getattachmentlist(page int64, page_size int64, so
 		"Links", "Updatetime", "Createtime")
 	count, _ = qs.Count()
 	for _, m := range attachments {
-		m["Filepath"] = this.changeFilepath(m["Filepath"].(string))
-		m["Filetype"] = this.changeFileType(m["Filetype"].(int64))
+		m["Filepath"] = this.ChangeFilepath(m["Filepath"].(string))
+		m["Filetype"] = this.ChangeFileType(m["Filetype"].(int64))
 	}
 	return attachments, count
 }
 
 //转化能成能访问的url
-func (this *attachmentService) changeFilepath(filepath string) (string) {
+func (this *attachmentService) ChangeFilepath(filepath string) (string) {
 	return this.domain + filepath
 }
 
-func (this *attachmentService) changeFileType(file_type int64) (fileType string) {
+func (this *attachmentService) ChangeFileType(file_type int64) (fileType string) {
 	switch file_type {
 	case am.FILE_TYPE_IMAGE:
 		fileType = "图片"

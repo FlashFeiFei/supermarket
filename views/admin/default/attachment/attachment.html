@@ -118,17 +118,17 @@
                 iconCls: 'icon-save',
                 handler: function () {
                     $("#form1").form('submit', {
-                        url: URL + '/AddUser',
+                        url: URL + '/updateimageinfo',
                         onSubmit: function () {
                             return $("#form1").form('validate');
                         },
                         success: function (r) {
                             var r = $.parseJSON(r);
-                            if (r.status) {
+                            if (r.code == 0) {
                                 $("#dialog").dialog("close");
                                 $("#datagrid").datagrid('reload');
                             } else {
-                                vac.alert(r.info);
+                                vac.alert(r.data);
                             }
                         }
                     });
@@ -221,7 +221,7 @@
     <div class="m-toolbar">
         <div class="m-title"></div>
         <div class="m-left">
-            <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton">上传附件</a>
+            <a href="#" icon='icon-add' plain="true" onclick="addrow()" class="easyui-linkbutton">上传图片</a>
             <a href="#" icon='icon-edit' plain="true" onclick="editrow()" class="easyui-linkbutton">编辑</a>
             <a href="#" icon='icon-save' plain="true" onclick="saverow()" class="easyui-linkbutton">保存</a>
             <a href="#" icon='icon-cancel' plain="true" onclick="delrow()" class="easyui-linkbutton">删除</a>
@@ -231,7 +231,7 @@
 </div>
 <!--表格内的右键菜单-->
 <div id="mm" class="easyui-menu" style="width:120px;display: none">
-    <div iconCls='icon-add' onclick="addrow()">上传附件</div>
+    <div iconCls='icon-add' onclick="addrow()">上传图片</div>
     <div iconCls="icon-edit" onclick="editrow()">编辑</div>
     <div iconCls='icon-save' onclick="saverow()">保存</div>
     <div iconCls='icon-cancel' onclick="cancelrow()">取消</div>
@@ -243,34 +243,53 @@
 </div>
 <!--表头的右键菜单-->
 <div id="mm1" class="easyui-menu" style="width:120px;display: none">
-    <div icon='icon-add' onclick="addrow()">上传附件</div>
+    <div icon='icon-add' onclick="addrow()">上传图片</div>
 </div>
 
 
 <!--上传弹窗-->
-<div id="dialog" title="上传附件" style="width:400px;height:400px;">
+<div id="dialog" title="上传图片" style="width:400px;height:400px;">
     <div style="padding:20px 20px 40px 80px;">
-        <form id="form1" method="post">
-            <div class="form-group">
-                <div class='col-md-4'>
-                    <div align="center">
-                        <img src="{{.config.Photo}}" id='logoimg' class="am-img-responsive" alt="图片"
-                             style="border:1px red solid;height: 260px; width: 260px;"/>
-                        <p>请上传格式为.png .jpg .jpeg的图片。</p>
+        <table>
+            <form id="form1" method="post">
+                <tr>
+                    <td>标题：</td>
+                    <td>
+                        <input name="Title" class="easyui-validatebox" required="true" validType='account[6,20]'/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>超链接：</td>
+                    <td>
+                        <input name="Links" class="easyui-validatebox" validType="url"/>
+                    </td>
+                </tr>
+                <tr hidden>
+                    <td>id：</td>
+                    <td>
+                        <input id="AttachmentId" name="AttachmentId" class="easyui-validatebox" required="true" />
+                    </td>
+                </tr>
+            </form>
+            <!--上传图片的-->
+            <div class='col-md-4'>
+                <div align="center">
+                    <img src="{{.config.Photo}}" id='logoimg' class="am-img-responsive" alt="图片"
+                         style="border:1px red solid;height: 260px; width: 260px;"/>
+                    <p>请上传格式为.png .jpg .jpeg的图片。</p>
 
-                        <p>上传完毕后需要点击左边曾加按钮才能生效。</p>
+                    <p>上传完毕后需要点击左边曾加按钮才能生效。</p>
 
-                        <div id='uploadphotoconfirm' style='color:red'></div>
-                        <div>
-                            <button type="submit" class="btn btn-default" id='upload_button'>上传Logo</button>
-                        </div>
-                        <div class="btn btn-success"><a id='lookphoto' href="{{.config.Photo}}"
-                                                        target="_blank">查看Logo</a>
-                        </div>
+                    <div id='uploadphotoconfirm' style='color:red'></div>
+                    <div>
+                        <button type="submit" class="btn btn-default" id='upload_button'>上传Logo</button>
+                    </div>
+                    <div class="btn btn-success"><a id='lookphoto' href="{{.config.Photo}}"
+                                                    target="_blank">查看Logo</a>
                     </div>
                 </div>
             </div>
-        </form>
+        </table>
     </div>
 </div>
 
@@ -313,13 +332,14 @@
             },
             onComplete: function (file, response) {
                 console.log(response)
-                if (response.error == 1) {
+                if (response.code != 0) {
                     confirmdiv.text(response.message);
                 } else {
                     confirmdiv.text("上传完成");
-                    $("#logoimg").attr("src", response.url);
-                    $('#lookphoto').attr("href", response.url);
-                    $("#uploadlogo").html("<input hidden='hidden' type='hidden'  name='photo' value='" + response.url + "'>");
+                    $("#logoimg").attr("src", response.data.url);
+                    $('#lookphoto').attr("href", response.data.url);
+                    $("#uploadlogo").html("<input hidden='hidden' type='hidden'  name='photo' value='" + response.data.url + "'>");
+                    $("#AttachmentId").val(response.data.image_id)
                 }
 
                 window.clearInterval(interval);

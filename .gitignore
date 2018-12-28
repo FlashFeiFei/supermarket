@@ -1,2 +1,2 @@
 *.exe
-./static/upload/*
+/static/upload/*

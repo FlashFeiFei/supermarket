@@ -3,6 +3,7 @@ package attachment
 import (
 	"github.com/flashfeifei/supermarket/lib"
 	"github.com/flashfeifei/supermarket/service/supermarket/attachment"
+	"strconv"
 )
 
 type AttachmentController struct {
@@ -35,13 +36,41 @@ func (this *AttachmentController) Index() {
 //上传一张图片
 func (this *AttachmentController) UploadImage() {
 	image_service := attachment.NewAttachmentImageService()
-	image_id, err := image_service.AddImageAttachmentByUpload("imgFile",this.Ctx)
+	image_id, image_model, err := image_service.AddImageAttachmentByUpload("imgFile", this.Ctx)
 	if err != nil {
 		this.Ctx.Output.JSON(lib.ApiErr(err), false, false)
 		this.Ctx.Output.Body([]byte(""))
 		return
 	}
-	this.Ctx.Output.JSON(lib.ApiSuccess(image_id), false, false)
+	att_service := attachment.NewAttachmentService()
+	url := att_service.ChangeFilepath(image_model.Filepath)
+	result_data := make(map[string]interface{})
+	result_data["url"] = url
+	result_data["image_id"] = image_id
+	this.Ctx.Output.JSON(lib.ApiSuccess(result_data), false, false)
+	this.Ctx.Output.Body([]byte(""))
+	return
+}
+
+//更新图片的信息
+func (this *AttachmentController) UpdateImageInfo() {
+	field := make(map[string]string)
+	field["title"] = this.GetString("Title")
+	field["links"] = this.GetString("Links")
+	attachment_id, err := strconv.ParseInt(this.GetString("AttachmentId"), 10, 64)
+	if err != nil {
+		this.Ctx.Output.JSON(lib.ApiErr(err), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
+	image_service := attachment.NewAttachmentImageService()
+	_, err = image_service.UpdateImageAttachmentInfo(attachment_id, field)
+	if err != nil {
+		this.Ctx.Output.JSON(lib.ApiErr(err), false, false)
+		this.Ctx.Output.Body([]byte(""))
+		return
+	}
+	this.Ctx.Output.JSON(lib.ApiSuccess(""), false, false)
 	this.Ctx.Output.Body([]byte(""))
 	return
 }
