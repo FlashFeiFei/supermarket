@@ -15,6 +15,7 @@ package routers
 
 import (
 	"github.com/flashfeifei/supermarket/routers/admin/attachment"
+	"github.com/flashfeifei/supermarket/routers/admin/banner"
 	"github.com/flashfeifei/supermarket/routers/supermarket/user/wechat"
 )
 
@@ -22,10 +23,12 @@ import (
 func Run() {
 	//后台模块
 	rbacrouter()
+	//附件管理路由注册
+	attachment.AdminAttachmentRouterRegister()
+	//banner管理
+	banner.AdminBannerRouterRegister()
+
 
 	//小程序模块
 	wechat.MiniprogramLoginRouter()
-
-	//后台附件管理路由注册
-	attachment.AdminAttachmentRouterRegister()
 }
