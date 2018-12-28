@@ -41,3 +41,62 @@ CREATE TABLE `supermarket_attachment` (
   `deletetime` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图片、视频等资源。附件表';
+
+
+-- 轮播图
+CREATE TABLE `supermarket_banner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `attachment_id` int(11) NOT NULL COMMENT '附件id',
+  `title` varchar(255) NOT NULL COMMENT '轮播图标题',
+  `createtime` int(11) NOT NULL,
+  `updatetime` int(11) NOT NULL,
+  `deletetime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='轮播图';
+
+
+-- 商品分类
+CREATE TABLE `supermarket_goods_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '类名',
+  `createtime` int(11) NOT NULL,
+  `updatetime` int(11) NOT NULL,
+  `deletetime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类';
+
+
+-- 商品
+CREATE TABLE `supermarket_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '商品名称',
+  `details` varchar(255) NOT NULL COMMENT '商品详情',
+  `parameter` varchar(255) NOT NULL COMMENT '商品参数。比如多少多少克',
+  `price` int(10) NOT NULL COMMENT '单价，单位分',
+  `attachment_id` int(11) NOT NULL COMMENT '附件id',
+  `theme_id` int(11) NOT NULL DEFAULT '0' COMMENT '主题id',
+  `category_id` int(11) NOT NULL COMMENT '分类id',
+  `sort` int(11) NOT NULL DEFAULT '0' COMMENT '推荐程度',
+  `inventory` tinyint(11) NOT NULL COMMENT '库存，1表示有，0表示',
+  `createtime` int(11) NOT NULL,
+  `updatetime` int(11) NOT NULL,
+  `deletetime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
+
+
+-- 主题表
+CREATE TABLE `supermarket_theme` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `attachment_id` int(11) NOT NULL COMMENT '附件id',
+  `title` varchar(255) NOT NULL COMMENT '主题名',
+  `createtime` int(11) NOT NULL,
+  `updatetime` int(11) NOT NULL,
+  `deletetime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主题表';
+
+
+
+
+

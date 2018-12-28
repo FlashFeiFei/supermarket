@@ -5,5 +5,5 @@ type BannerController struct {
 }
 
 func (this *BannerController) AddBanner() {
-	
+
 }
