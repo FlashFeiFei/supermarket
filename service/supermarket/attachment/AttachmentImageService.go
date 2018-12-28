@@ -91,7 +91,7 @@ func (this *attachmentImageService) QueryImageAttachment(id int64) (*am.Supermar
 	return attachment_model, nil
 }
 
-//更新一下属性
+//更新一下属性,返回影响的行数
 func (this *attachmentImageService) UpdateImageAttachmentInfo(id int64, field map[string]string) (num int64, err error) {
 	o := orm.NewOrm()
 	attachment_model := new(am.SupermarketAttachmentModel)

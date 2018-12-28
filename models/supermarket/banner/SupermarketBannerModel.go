@@ -7,9 +7,9 @@ type SupermarketBannerModel struct {
 	Id                      int64 `orm:"pk;auto"`
 	Attachmentid            int64
 	Title                   string
-	createtime              int64
-	updatetime              int64
-	deletetime              int64
+	Createtime              int64
+	Updatetime              int64
+	Deletetime              int64
 }
 
 func (this *SupermarketBannerModel) TableName() string {
