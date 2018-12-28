@@ -5,7 +5,7 @@
         //附件列表
         $("#datagrid").datagrid({
             // title:'附件列表',
-            url: URL + '/index',
+            url: URL + '/Index',
             header: '#header',
             fit: true,
             method: 'POST',
@@ -78,7 +78,7 @@
                     return;
                 }
                 changes.Id = data.Id;
-                vac.ajax(URL + '/updateimageinfo', changes, 'POST', function (r) {
+                vac.ajax(URL + '/UpdateImageInfo', changes, 'POST', function (r) {
                     if (r.code != 0) {
                         vac.alert(r.info);
                     } else {
@@ -116,7 +116,7 @@
                 iconCls: 'icon-save',
                 handler: function () {
                     $("#form1").form('submit', {
-                        url: URL + '/updateimageinfo',
+                        url: URL + '/UpdateImageInfo',
                         onSubmit: function () {
                             return $("#form1").form('validate');
                         },
@@ -299,7 +299,7 @@
         var confirmdiv = $('#uploadphotoconfirm');
         var fileType = "ptic", fileNum = "one";
         new AjaxUpload(button, {
-            action: "/attachment/attachment/uploadimage",
+            action: "/attachment/attachment/UploadImage",
             name: 'imgFile',
             responseType: 'json',
             onSubmit: function (file, ext) {

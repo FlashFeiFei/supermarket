@@ -6,9 +6,9 @@ import (
 )
 
 func AdminAttachmentRouterRegister(){
-	beego.Router("/attachment/attachment/index", &attachment.AttachmentController{}, "*:Index")
+	beego.Router("/attachment/attachment/Index", &attachment.AttachmentController{}, "*:Index")
 	//上传一张图片
-	beego.Router("/attachment/attachment/uploadimage", &attachment.AttachmentController{}, "*:UploadImage")
+	beego.Router("/attachment/attachment/UploadImage", &attachment.AttachmentController{}, "*:UploadImage")
 	//更新图片信息
-	beego.Router("/attachment/attachment/updateimageinfo", &attachment.AttachmentController{}, "*:UpdateImageInfo")
+	beego.Router("/attachment/attachment/UpdateImageInfo", &attachment.AttachmentController{}, "*:UpdateImageInfo")
 }
