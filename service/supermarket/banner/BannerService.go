@@ -25,7 +25,7 @@ func (this *bannerService) AddBanner(attachment_id int64, title string) (banner_
 	o := orm.NewOrm()
 	banner_model = new(banner.SupermarketBannerModel)
 	banner_model.Title = title
-	banner_model.Attachmentid = attachment_id
+	banner_model.AttachmentId = attachment_id
 	banner_model.Createtime = time.Now().Unix()
 	banner_model.Updatetime = time.Now().Unix()
 	_, err = o.Insert(banner_model)
@@ -50,7 +50,7 @@ func (this *bannerService) UpdateBanner(id, attachment_id int64, title string) (
 	if err != nil {
 		return 0, err
 	}
-	banner_model.Attachmentid = attachment_id
+	banner_model.AttachmentId = attachment_id
 	banner_model.Title = title
 	banner_model.Updatetime = time.Now().Unix()
 	num, err = o.Update(banner_model)
@@ -87,20 +87,20 @@ func (this *bannerService) Getattachmentlist(page int64, page_size int64, sort s
 	} else {
 		offset = (page - 1) * page_size
 	}
-	qs.Limit(page_size, offset).OrderBy(sort).Filter("deletetime__exact", 0).Values(&banners, "Id", "Title", "Attachmentid", "Updatetime", "Createtime")
+	qs.Limit(page_size, offset).OrderBy(sort).Filter("deletetime__exact", 0).Values(&banners, "Id", "Title", "AttachmentId", "Updatetime", "Createtime")
 	count, _ = qs.Count()
 
 	//数据格式转化
 	image_service := attachment.NewAttachmentImageService()
 	attachment_service := attachment.NewAttachmentService()
 	for _, b := range banners {
-		attachment_id := b["Attachmentid"].(int64)
+		attachment_id := b["AttachmentId"].(int64)
 		att_model, _ := image_service.QueryImageAttachment(attachment_id)
 		//有外链取外链
 		if len(att_model.Links) == 0 {
-			b["url"] =  attachment_service.ChangeFilepath(att_model.Filepath)
+			b["Url"] =  attachment_service.ChangeFilepath(att_model.Filepath)
 		}else {
-			b["url"] = att_model.Links
+			b["Url"] = att_model.Links
 		}
 	}
 	return banners, count

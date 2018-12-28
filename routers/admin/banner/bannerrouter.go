@@ -7,4 +7,5 @@ import (
 
 func AdminBannerRouterRegister() {
 	beego.Router("/banner/banner/Index", &banner.BannerController{}, "*:Index")
+	beego.Router("/banner/banner/AddBanner", &banner.BannerController{}, "*:AddBanner")
 }

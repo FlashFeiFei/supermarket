@@ -177,42 +177,7 @@
         $("#dialog").dialog('open');
         $("#form1").form('clear');
     }
-
-    //编辑用户密码
-    function updateuserpassword() {
-        var dg = $("#datagrid")
-        var selectedRow = dg.datagrid('getSelected');
-        if (selectedRow == null) {
-            vac.alert("请选择用户");
-            return;
-        }
-        $("#dialog2").dialog('open');
-        $("form2").form('load', {
-            password: ''
-        });
-    }
-
-    //删除
-    function delrow() {
-        $.messager.confirm('Confirm', '你确定要删除?', function (r) {
-            if (r) {
-                var row = $("#datagrid").datagrid("getSelected");
-                if (!row) {
-                    vac.alert("请选择要删除的行");
-                    return;
-                }
-                vac.ajax(URL + '/DelUser', {
-                    Id: row.Id
-                }, 'POST', function (r) {
-                    if (r.status) {
-                        $("#datagrid").datagrid('reload');
-                    } else {
-                        vac.alert(r.info);
-                    }
-                })
-            }
-        });
-    }
+    
 </script>
 <table id="datagrid"></table>
 <div id="header">
@@ -265,7 +230,7 @@
                 <tr hidden>
                     <td>id：</td>
                     <td>
-                        <input id="Id" name="AttachmentId" class="easyui-validatebox" required="true" />
+                        <input id="Id" name="AttachmentId" class="easyui-validatebox" required="true"/>
                     </td>
                 </tr>
             </form>

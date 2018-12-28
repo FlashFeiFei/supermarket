@@ -5,7 +5,7 @@ import "github.com/flashfeifei/supermarket/models/supermarket"
 type SupermarketBannerModel struct {
 	supermarket.Supermarket `orm:"-"`
 	Id                      int64 `orm:"pk;auto"`
-	Attachmentid            int64
+	AttachmentId            int64
 	Title                   string
 	Createtime              int64
 	Updatetime              int64

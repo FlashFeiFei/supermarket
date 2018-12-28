@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/flashfeifei/supermarket/models/admin"
 	"github.com/flashfeifei/supermarket/models/supermarket/attachment"
+	"github.com/flashfeifei/supermarket/models/supermarket/banner"
 	"github.com/flashfeifei/supermarket/models/supermarket/user"
 	"github.com/flashfeifei/supermarket/models/supermarket/user/wechat"
 )
@@ -22,6 +23,7 @@ func RegisterDBSupermarket() {
 
 	//注册附件模型
 	orm.RegisterModel(new(attachment.SupermarketAttachmentModel))
+	orm.RegisterModel(new(banner.SupermarketBannerModel))
 }
 
 func RegisterDBModel() {
