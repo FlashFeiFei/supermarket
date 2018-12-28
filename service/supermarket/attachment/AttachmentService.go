@@ -25,7 +25,7 @@ func (this *attachmentService) Getattachmentlist(page int64, page_size int64, so
 	} else {
 		offset = (page - 1) * page_size
 	}
-	qs.Limit(page_size, offset).OrderBy(sort).Values(&attachments, "Id", "Title", "Filepath", "Filetype",
+	qs.Limit(page_size, offset).OrderBy(sort).Filter("deletetime__exact",0).Values(&attachments, "Id", "Title", "Filepath", "Filetype",
 		"Links", "Updatetime", "Createtime")
 	count, _ = qs.Count()
 	for _, m := range attachments {
